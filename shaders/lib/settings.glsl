@@ -1,6 +1,6 @@
 /// -------------------------------- /// Post /// -------------------------------- ///
 
-#define OUTLINES 2 // Enables outlines. Set to standard for classic outlined blocks, or Dungeons for Dungeons/SDGP styled outlines. [0 1 2]
+#define OUTLINES 0 // Enables outlines. Set to standard for classic outlined blocks, or Dungeons for Dungeons/SDGP styled outlines. [0 1 2]
 #define OUTLINE_BRIGHTNESS 1.00 // Outline brightness. Set it to -1 for black outlines, or 1 to highlighted outlines. [-1.00 -0.95 -0.90 -0.85 -0.80 -0.75 -0.70 -0.65 -0.60 -0.55 -0.50 -0.45 -0.40 -0.35 -0.30 -0.25 -0.20 -0.15 -0.10 -0.05 0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00]
 #define OUTLINE_PIX_SIZE 1 // Outline pixel size. Adjust to change the thickness of the outlines [1 2 4 8 16 32 64]
 
@@ -18,9 +18,9 @@
 #define ABERRATION_PIX_SIZE 4 // Chromating abberation length. Increase for stronger effects. [1 2 4 8 16]
 
 #define BLOOM // Enables bloom.
-#define BLOOM_STRENGTH 0.20 // Bloom brightness [0.00 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42 0.43 0.44 0.45 0.46 0.47 0.48 0.49 0.50]
+#define BLOOM_STRENGTH 0.10 // Bloom brightness [0.00 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42 0.43 0.44 0.45 0.46 0.47 0.48 0.49 0.50]
 
-#define LENS_FLARE // Enables lens flare.
+// #define LENS_FLARE // Enables lens flare.
 #define LENS_FLARE_STRENGTH 1.00 // Lens flare intensity. [0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00]
 
 // #define VIGNETTE // Enables vignette
@@ -70,7 +70,7 @@ const float sunPathRotation = 30.0; // Light path angle. This also affects sky a
 
 /// -------------------------------- /// Atmospherics /// -------------------------------- ///
 
-#define SUN_MOON_TYPE 0 // Sun and moon type [0 1 2]
+#define SUN_MOON_TYPE 2 // Sun and moon type [0 1 2]
 #define SUN_MOON_INTENSITY 5 // The sun or moon's intensity. Also affects specular reflections. [2 3 4 5 6 7 8]
 
 #define VOLUMETRIC_LIGHTING // Enables volumetric lighting.
@@ -148,9 +148,9 @@ const float sunPathRotation = 30.0; // Light path angle. This also affects sky a
 /// -------------------------------- /// Configuration /// -------------------------------- ///
 
 #define BLOCKLIGHT_R 255 // Red value [3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105 108 111 114 117 120 123 126 129 132 135 138 141 144 147 150 153 156 159 162 165 168 171 174 177 180 183 186 189 192 195 198 201 204 207 210 213 216 219 222 225 228 231 234 237 240 243 246 249 252 255]
-#define BLOCKLIGHT_G 240 // Green value [3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105 108 111 114 117 120 123 126 129 132 135 138 141 144 147 150 153 156 159 162 165 168 171 174 177 180 183 186 189 192 195 198 201 204 207 210 213 216 219 222 225 228 231 234 237 240 243 246 249 252 255]
-#define BLOCKLIGHT_B 210 // Blue value [3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105 108 111 114 117 120 123 126 129 132 135 138 141 144 147 150 153 156 159 162 165 168 171 174 177 180 183 186 189 192 195 198 201 204 207 210 213 216 219 222 225 228 231 234 237 240 243 246 249 252 255]
-#define BLOCKLIGHT_I 1.00 // Intensity value [0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00]
+#define BLOCKLIGHT_G 186 // Green value [3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105 108 111 114 117 120 123 126 129 132 135 138 141 144 147 150 153 156 159 162 165 168 171 174 177 180 183 186 189 192 195 198 201 204 207 210 213 216 219 222 225 228 231 234 237 240 243 246 249 252 255]
+#define BLOCKLIGHT_B 108 // Blue value [3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105 108 111 114 117 120 123 126 129 132 135 138 141 144 147 150 153 156 159 162 165 168 171 174 177 180 183 186 189 192 195 198 201 204 207 210 213 216 219 222 225 228 231 234 237 240 243 246 249 252 255]
+#define BLOCKLIGHT_I 1.40 // Intensity value [0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00]
 const vec3 blockLightCol = vec3(BLOCKLIGHT_R, BLOCKLIGHT_G, BLOCKLIGHT_B) * (BLOCKLIGHT_I * 0.00392156863);
 
 /// -------------------------------- /// Secret settings /// -------------------------------- ///
