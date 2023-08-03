@@ -86,7 +86,9 @@ vec3 getSkyBasic(in vec2 skyCoordScale, in float nEyePlayerPosY, in float skyPos
             #ifdef FORCE_DISABLE_DAY_CYCLE
                 if(skyPosZ > 0) finalCol += lightCol * pow(skyPosZ * skyPosZ, abs(nEyePlayerPosY) + 1.0);
             #else
-                float lightDiffuse = pow(skyPosZ * skyPosZ, abs(nEyePlayerPosY) + 1.0);
+                // SUN_RADIANCE subtracted so amount of radiance corresponds with the number user sets in settings (smaller number = less radiance, larger number = more radiance)
+                // Numbers added and multiplied to SUN_RADIANCE in order to put it in a specific range for settings
+                float lightDiffuse = pow(skyPosZ * skyPosZ, abs(nEyePlayerPosY) - SUN_RADIANCE * 10 + 101.0);
                 float diffuseCycleAdjust = dayCycleAdjust * lightDiffuse;
                 finalCol += skyPosZ > 0 ? sunCol * diffuseCycleAdjust : moonCol * (lightDiffuse - diffuseCycleAdjust);
             #endif

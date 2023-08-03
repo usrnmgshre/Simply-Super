@@ -102,6 +102,7 @@ screen.ATMOSPHERICS = Atmospherics
     option.FADE_SPEED = Fade speed
     option.SECOND_CLOUD_HEIGHT = 2nd cloud height
     option.SKYBOX_BRIGHTNESS = Skybox brightness
+    option.SUN_RADIANCE = Sun radiance
 
 screen.WORLD = World
     option.TERRAIN_ANIMATION = Terrain animation
