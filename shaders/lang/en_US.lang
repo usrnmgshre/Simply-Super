@@ -91,17 +91,22 @@ screen.ATMOSPHERICS = Atmospherics
         value.SUN_MOON_TYPE.0 = Default
         value.SUN_MOON_TYPE.1 = Round
         value.SUN_MOON_TYPE.2 = Vanilla
+    
 
     option.SUN_MOON_INTENSITY = Sun/moon intensity
+    option.STAR_INTENSITY = Star intensity
     option.VOLUMETRIC_LIGHTING = Volumetric lighting
     option.VOLUMETRIC_LIGHTING_STRENGTH = Volumetric lighting strength
     option.BORDER_FOG = Border fog
     option.GROUND_FOG_STRENGTH = Ground fog strength
-    option.STORY_MODE_CLOUDS = Story mode clouds
-    option.DOUBLE_VANILLA_CLOUDS = Double vanilla clouds
-    option.DYNAMIC_CLOUDS = Dynamic clouds
-    option.FADE_SPEED = Fade speed
-    option.SECOND_CLOUD_HEIGHT = 2nd cloud height
+
+    screen.CLOUDS = Clouds
+        option.STORY_MODE_CLOUDS = Story mode clouds
+        option.DOUBLE_VANILLA_CLOUDS = Double vanilla clouds
+        option.DYNAMIC_CLOUDS = Dynamic clouds
+        option.FADE_SPEED = Fade speed
+        option.SECOND_CLOUD_HEIGHT = 2nd cloud height
+    
     option.SKYBOX_BRIGHTNESS = Skybox brightness
     option.SUN_RADIANCE = Sun radiance
 
