@@ -3,7 +3,7 @@
 
 vec4 complexShadingGbuffers(in structPBR material){
 	// Calculate sky diffusion first, begining with the sky itself
-	vec3 totalDiffuse = toLinear(SKY_COL_DATA_BLOCK);
+	vec3 totalDiffuse = toLinear(SKY_COL_DATA_BLOCK) * SKY_INFLUENCE;
 
 	#ifdef IS_IRIS
 		// Calculate thunder flash

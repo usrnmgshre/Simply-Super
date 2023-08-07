@@ -66,6 +66,7 @@ screen.LIGHTING = Lighting
     option.shadowMapResolution = Shadowmap resolution
     option.shadowDistance = Shadowmap distance
     option.sunPathRotation = Light path angle
+    option.SKY_INFLUENCE = Sky influence
 
     option.UNDERWATER_CAUSTICS = Underwater caustics
         value.UNDERWATER_CAUSTICS.0 = OFF
