@@ -332,7 +332,13 @@
             #endif
 
             #ifdef WATER_FOAM
-                material.albedo = min(vec4(1), material.albedo + exp2((waterDepth + 0.0625) * 8.0));
+                vec4 foamColor = vec4(FOAM_R, FOAM_G, FOAM_B, FOAM_A);
+
+                #if FOAM_MODE == 0
+                    material.albedo = min(vec4(1), material.albedo + min(exp2((waterDepth + 0.0625) * 2048.0), 1) * foamColor);
+                #elif FOAM_MODE == 1
+                    material.albedo = min(vec4(1), material.albedo + min(exp2((waterDepth + 0.0625) * 8.0), 1) * foamColor);
+                #endif
             #endif
         }
 

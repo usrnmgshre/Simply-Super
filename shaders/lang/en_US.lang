@@ -158,8 +158,16 @@ screen.PBR = PBR
         option.WATER_DEPTH_SIZE = Water normalmap depth size
         option.WATER_TILE_SIZE = Water tile size
         option.WATER_STYLIZE_ABSORPTION = Water absorption
-        option.WATER_FOAM = Water foam
         option.WATER_FLAT = Flat water albedo
+        option.WATER_FOAM = Water foam
+        option.FOAM_MODE = Foam mode
+            value.FOAM_MODE.0 = Trailer
+            value.FOAM_MODE.1 = SDV
+        screen.FOAM_COLOR = Foam color
+            option.FOAM_R = Foam red
+            option.FOAM_G = Foam green
+            option.FOAM_B = Foam blue
+            option.FOAM_A = Foam alpha
 
     screen.LAVA_SETTINGS = Lava material settings
         option.LAVA_BRIGHTNESS = Lava brightness

@@ -130,8 +130,13 @@ const float sunPathRotation = 30.0; // Light path angle. This also affects sky a
 #define WATER_TILE_SIZE 16 // Tile size of the water [4 8 16 24 32]
 
 #define WATER_STYLIZE_ABSORPTION // Enables stylized water absorption. Changes water color based on depth.
+// #define WATER_FLAT // Enables flat water albedo.
 #define WATER_FOAM // Enables water foam. Appears on the sides of most solid objects, including entities.
-#define WATER_FLAT // Enables flat water albedo.
+#define FOAM_MODE 0 // Water foam mode. Trailer makes foam have a flat edge. SDV makes foam fade gradually. [0 1]
+#define FOAM_R 0.0 // Red value [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+#define FOAM_G 0.5 // Green value [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+#define FOAM_B 0.6 // Blue value [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+#define FOAM_A 0.3 // Alpha value [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
 
 /// -------------------------------- /// Lava material settings /// -------------------------------- ///
 
