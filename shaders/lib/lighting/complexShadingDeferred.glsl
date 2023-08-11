@@ -4,17 +4,17 @@ vec3 complexShadingDeferred(in vec3 sceneCol, in vec3 screenPos, in vec3 viewPos
 	#endif
 
 	// Calculate SSGI
-	#ifdef SSGI
-		// Get SSGI screen coordinates
-		vec3 SSGIcoord = rayTraceScene(screenPos, viewPos, generateCosineVector(normal, noiseUnitVector), dither.z, SSGI_STEPS, SSGI_BISTEPS);
-
-		// If sky don't do SSGI
-		#ifdef PREVIOUS_FRAME
-			if(SSGIcoord.z > 0.5) sceneCol += albedo * textureLod(colortex5, toPrevScreenPos(SSGIcoord.xy), 0).rgb;
-		#else
-			if(SSGIcoord.z > 0.5) sceneCol += albedo * textureLod(gcolor, SSGIcoord.xy, 0).rgb;
-		#endif
-	#endif
+//	#ifdef SSGI
+//		// Get SSGI screen coordinates
+//		vec3 SSGIcoord = rayTraceScene(screenPos, viewPos, generateCosineVector(normal, noiseUnitVector), dither.z, SSGI_STEPS, SSGI_BISTEPS);
+//
+//		// If sky don't do SSGI
+//		#ifdef PREVIOUS_FRAME
+//			if(SSGIcoord.z > 0.5) sceneCol += albedo * textureLod(colortex5, toPrevScreenPos(SSGIcoord.xy), 0).rgb;
+//		#else
+//			if(SSGIcoord.z > 0.5) sceneCol += albedo * textureLod(gcolor, SSGIcoord.xy, 0).rgb;
+//		#endif
+//	#endif
 
 	// If smoothness is 0, don't do reflections
 	if(smoothness > 0.005){

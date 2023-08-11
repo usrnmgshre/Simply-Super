@@ -6,7 +6,7 @@
 
 // #define RETRO_FILTER // Enable retro filter. Works best at low render quality.
 
-#define ANTI_ALIASING 0 // Enables anti-aliasing. FXAA is fast and works with screenshot sizes. TAA is slower, doesn't work with custom screenshots, but smooths noise. Disable anti-aliasing on your shader menu before using this feature! [0 1 2 3]
+#define ANTI_ALIASING 2 // Enables anti-aliasing. FXAA is fast and works with screenshot sizes. TAA is slower, doesn't work with custom screenshots, but smooths noise. Disable anti-aliasing on your shader menu before using this feature! [0 1 2 3]
 // #define SHARPEN_FILTER // Enables image sharpening. Use this with AA on if the image appears blurry.
 
 /// -------------------------------- /// Camera /// -------------------------------- ///
@@ -60,7 +60,7 @@ const float sunPathRotation = 30.0; // Light path angle. This also affects sky a
 
 #define SSGI // Enables SSGI, currently experimental and may not be very optimized, may improve the ambience of dark areas despite the noisiness. Turn on TAA for best results.
 #define SSGI_STEPS 20 // SSGI steps, increasing may improve quality but demand more performance [16 20 24 28 32]
-#define SSGI_BISTEPS 4 // SSGI binary refinement steps, improves quality especially when using a low step count, balancing the values is required for optimum performance [0 4 8 16]
+#define SSGI_BISTEPS 16 // SSGI binary refinement steps, improves quality especially when using a low step count, balancing the values is required for optimum performance [0 4 8 16]
 
 #define SSR // Enables SSR, may not look good in certain areas
 #define SSR_STEPS 32 // SSR steps, increasing may improve quality but demand more performance [16 20 24 28 32]
@@ -164,7 +164,7 @@ const vec3 blockLightCol = vec3(BLOCKLIGHT_R, BLOCKLIGHT_G, BLOCKLIGHT_B) * (BLO
 /// -------------------------------- /// Secret settings /// -------------------------------- ///
 
 #define COLOR_MODE 0 // Albedo color mode. White mode makes everything white. Black mode makes everything black. Foliage mode shows only foliage colors. Keeps materials on. [0 1 2 3]
-#define NOISE_SPEED 32 // The speed in which the noise randomises each frame. Useful for TAA. This effect is visible only when TAA is enabled. [2 4 8 16 32]
+#define NOISE_SPEED 8 // The speed in which the noise randomises each frame. Useful for TAA. This effect is visible only when TAA is enabled. [2 4 8 16 32]
 
 /// -------------------------------- /// Physics mod settings /// -------------------------------- ///
 
