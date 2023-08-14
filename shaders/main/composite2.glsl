@@ -11,7 +11,7 @@
 ================================ /// Super Duper Vanilla v1.3.4 /// ================================
 */
 
-/// Buffer features: Motion blur
+/// Buffer features: Temporal Anti-Aliasing (TAA)
 
 /// -------------------------------- /// Vertex Shader /// -------------------------------- ///
 
@@ -32,7 +32,11 @@
 
     uniform sampler2D gcolor;
 
-    #ifdef MOTION_BLUR
+    #if (defined PREVIOUS_FRAME && defined AUTO_EXPOSURE && (defined SSR || defined SSGI)) || ANTI_ALIASING >= 2
+        uniform sampler2D colortex5;
+    #endif
+
+    #if ANTI_ALIASING >= 2
         uniform vec3 cameraPosition;
         uniform vec3 previousCameraPosition;
 
@@ -46,26 +50,26 @@
 
         #include "/lib/utility/convertPrevScreenSpace.glsl"
 
-        #include "/lib/utility/noiseFunctions.glsl"
-
-        #include "/lib/post/motionBlur.glsl"
+        #include "/lib/antialiasing/taa.glsl"
     #endif
 
     void main(){
-        // Screen texel coordinates
-        ivec2 screenTexelCoord = ivec2(gl_FragCoord.xy);
-        // Get scene color
-        vec3 sceneCol = texelFetch(gcolor, screenTexelCoord, 0).rgb;
-
-        #ifdef MOTION_BLUR
-            // Declare and get positions
-            float depth = texelFetch(depthtex0, screenTexelCoord, 0).x;
-
-            // Apply motion blur if not player hand
-            if(depth > 0.56) sceneCol = motionBlur(sceneCol, depth, texelFetch(noisetex, screenTexelCoord & 255, 0).x);
+        #if ANTI_ALIASING >= 2
+            vec3 sceneCol = textureTAA(ivec2(gl_FragCoord.xy));
+        #else
+            vec3 sceneCol = texelFetch(gcolor, ivec2(gl_FragCoord.xy), 0).rgb;
         #endif
 
     /* DRAWBUFFERS:0 */
         gl_FragData[0] = vec4(sceneCol, 1); // gcolor
+
+        #if (defined PREVIOUS_FRAME && (defined SSR || defined SSGI)) || ANTI_ALIASING >= 2
+        /* DRAWBUFFERS:05 */
+            #ifdef AUTO_EXPOSURE
+                gl_FragData[1] = vec4(sceneCol, texelFetch(colortex5, ivec2(0), 0).a); // colortex5
+            #else
+                gl_FragData[1] = vec4(sceneCol, 1); // colortex5
+            #endif
+        #endif
     }
 #endif

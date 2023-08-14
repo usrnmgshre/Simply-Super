@@ -11,7 +11,7 @@
 ================================ /// Super Duper Vanilla v1.3.4 /// ================================
 */
 
-/// Buffer features: SSGI Blur
+/// Buffer features: Fast Approximate Anti-Aliasing (FXAA)
 
 /// -------------------------------- /// Vertex Shader /// -------------------------------- ///
 
@@ -30,59 +30,22 @@
 #ifdef FRAGMENT
     in vec2 texCoord;
 
-    uniform float frameTimeCounter;
-
-    uniform mat4 gbufferProjection;
-    uniform mat4 gbufferProjectionInverse;
-
-    uniform sampler2D gcolor;
-    uniform sampler2D colortex1;
-    uniform sampler2D colortex2;
     uniform sampler2D colortex3;
-    uniform sampler2D colortex5;
 
-    uniform sampler2D depthtex0;
+    #if ANTI_ALIASING == 1 || ANTI_ALIASING == 3
+        uniform float pixelWidth;
+        uniform float pixelHeight;
 
-    #include "/lib/utility/convertViewSpace.glsl"
-    #include "/lib/utility/convertScreenSpace.glsl"
-    #include "/lib/utility/noiseFunctions.glsl"
-
-    #include "/lib/rayTracing/rayTracer.glsl"
+        #include "/lib/antialiasing/fxaa.glsl"
+    #endif
 
     void main(){
-        // Screen texel coordinates
-        ivec2 screenTexelCoord = ivec2(gl_FragCoord.xy);
-        // Get screen pos
-        vec3 screenPos = vec3(texCoord, texelFetch(depthtex0, screenTexelCoord, 0).x);
-        // Get view pos
-        vec3 viewPos = toView(screenPos);
-
-        // Get scene color
-        vec3 sceneCol = texelFetch(colortex3, ivec2(gl_FragCoord.xy), 0).rgb;
-
-        #if ANTI_ALIASING >= 2
-            vec3 dither = toRandPerFrame(getRand3(screenTexelCoord & 255), frameTimeCounter);
+        #if ANTI_ALIASING == 1 || ANTI_ALIASING == 3
+            vec3 sceneCol = textureFXAA(ivec2(gl_FragCoord.xy));
         #else
-            vec3 dither = getRand3(screenTexelCoord & 255);
+            vec3 sceneCol = texelFetch(colortex3, ivec2(gl_FragCoord.xy), 0).rgb;
         #endif
-
-        vec3 albedo = texelFetch(colortex2, screenTexelCoord, 0).rgb;
-        vec3 normal = texelFetch(colortex1, screenTexelCoord, 0).xyz;
-
-        #ifdef SSGI
-            vec3 noiseUnitVector = generateUnitVector(dither.xy);
-
-	    	// Get SSGI screen coordinates
-	    	vec3 SSGIcoord = rayTraceScene(screenPos, viewPos, generateCosineVector(normal, noiseUnitVector), dither.z, SSGI_STEPS, SSGI_BISTEPS);
-
-	    	// If sky don't do SSGI
-	    	#ifdef PREVIOUS_FRAME
-	    		if(SSGIcoord.z > 0.5) sceneCol += albedo * textureLod(colortex5, toPrevScreenPos(SSGIcoord.xy), 0).rgb;
-	    	#else
-	    		if(SSGIcoord.z > 0.5) sceneCol += albedo * textureLod(gcolor, SSGIcoord.xy, 0).rgb;
-	    	#endif
-	    #endif
-
+        
     /* DRAWBUFFERS:3 */
         gl_FragData[0] = vec4(sceneCol, 1); // colortex3
     }

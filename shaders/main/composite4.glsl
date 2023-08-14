@@ -11,16 +11,23 @@
 ================================ /// Super Duper Vanilla v1.3.4 /// ================================
 */
 
-/// Buffer features: Bloom blur 1st pass
+/// Buffer features: DOF blur
 
 /// -------------------------------- /// Vertex Shader /// -------------------------------- ///
 
 #ifdef VERTEX
+    flat out float fovMult;
+
     out vec2 texCoord;
+
+    uniform mat4 gbufferProjection;
 
     void main(){
         // Get buffer texture coordinates
         texCoord = gl_MultiTexCoord0.xy;
+
+        fovMult = gbufferProjection[1].y * 0.72794047;
+
         gl_Position = ftransform();
     }
 #endif
@@ -28,49 +35,71 @@
 /// -------------------------------- /// Fragment Shader /// -------------------------------- ///
 
 #ifdef FRAGMENT
+    flat in float fovMult;
+
     in vec2 texCoord;
 
-    #ifdef BLOOM
+    uniform sampler2D gcolor;
+
+    #ifdef DOF
         // Needs to be enabled by force to be able to use LOD fully even with textureLod
         const bool gcolorMipmapEnabled = true;
 
-        uniform float pixelWidth;
+        // Precalculated dof offsets by vec2(cos(x), sin(x))
+        const vec2 dofOffSets[9] = vec2[9](
+            vec2(0.76604444, 0.64278761),
+            vec2(0.17364818, 0.98480775),
+            vec2(-0.5, 0.86602540),
+            vec2(-0.93969262, 0.34202014),
+            vec2(-0.93969262, -0.34202014),
+            vec2(-0.5, -0.86602540),
+            vec2(0.17364818, -0.98480775),
+            vec2(0.76604444, -0.64278761),
+            vec2(1, 0)
+        );
 
-        uniform sampler2D gcolor;
+        uniform float centerDepthSmooth;
 
-        vec3 bloomTile(in vec3 bloomCol, in vec2 bloomPos, in int LOD){
-            float scale = exp2(LOD);
-            vec2 bloomUv = bloomPos * scale;
+        uniform float viewWidth;
+        uniform float viewHeight;
 
-            // Apply padding
-            if(bloomUv.x < 0 || bloomUv.x > 1 || bloomUv.y < 0 || bloomUv.y > 1) return bloomCol;
-
-            // Get pixel size based on bloom tile scale
-            float pixSize = scale * pixelWidth;
-
-            vec3 sample0 = textureLod(gcolor, vec2(bloomUv.x - pixSize * 2.0, bloomUv.y), LOD).rgb +
-                textureLod(gcolor, vec2(bloomUv.x + pixSize * 2.0, bloomUv.y), LOD).rgb;
-            vec3 sample1 = textureLod(gcolor, vec2(bloomUv.x - pixSize, bloomUv.y), LOD).rgb +
-                textureLod(gcolor, vec2(bloomUv.x + pixSize, bloomUv.y), LOD).rgb;
-            vec3 sample2 = textureLod(gcolor, bloomUv, LOD).rgb;
-
-            return sample0 * 0.0625 + sample1 * 0.25 + sample2 * 0.375;
-        }
+        uniform sampler2D depthtex1;
     #endif
 
     void main(){
-        #ifdef BLOOM
-            vec3 finalCol = bloomTile(vec3(0), texCoord, 2);
-            finalCol = bloomTile(finalCol, vec2(texCoord.x, texCoord.y - 0.25390625), 3);
-            finalCol = bloomTile(finalCol, vec2(texCoord.x - 0.12890625, texCoord.y - 0.25390625), 4);
-            finalCol = bloomTile(finalCol, vec2(texCoord.x - 0.1953125, texCoord.y - 0.25390625), 5);
-            finalCol = bloomTile(finalCol, vec2(texCoord.x - 0.12890625, texCoord.y - 0.3203125), 6);
-        
-        /* DRAWBUFFERS:4 */
-            gl_FragData[0] = vec4(finalCol, 1); //colortex4
-        #else
-        /* DRAWBUFFERS:4 */
-            gl_FragData[0] = vec4(0, 0, 0, 1); //colortex4
+        // Screen texel coordinates
+        ivec2 screenTexelCoord = ivec2(gl_FragCoord.xy);
+        // Get scene color
+        vec3 sceneCol = texelFetch(gcolor, screenTexelCoord, 0).rgb;
+
+        #ifdef DOF
+            // Declare and get positions
+            float depth = texelFetch(depthtex1, screenTexelCoord, 0).x;
+
+            // Apply DOF if not player hand
+            if(depth > 0.56){
+                // CoC calculation by Capt Tatsu from BSL
+                float CoC = max(0.0, abs(depth - centerDepthSmooth) * DOF_STRENGTH - 0.01);
+                CoC = CoC * inversesqrt(CoC * CoC + 0.1);
+
+                // We'll use a total of 10 samples for this blur (1 / 10)
+                float blurRadius = max(viewWidth, viewHeight) * fovMult * CoC * 0.1;
+                float currDofLOD = log2(blurRadius);
+                vec2 blurRes = blurRadius / vec2(viewWidth, viewHeight);
+
+                // Get center pixel color with LOD
+                vec3 dofColor = textureLod(gcolor, texCoord, currDofLOD).rgb;
+                for(int x = 0; x < 9; x++){
+                    // Rotate offsets and sample
+                    dofColor += textureLod(gcolor, texCoord - dofOffSets[x] * blurRes, currDofLOD).rgb;
+                }
+
+                // 9 offsetted samples + 1 sample (1 / 10)
+                sceneCol = dofColor * 0.1;
+            }
         #endif
+
+    /* DRAWBUFFERS:0 */
+        gl_FragData[0] = vec4(sceneCol, 1); // gcolor
     }
 #endif

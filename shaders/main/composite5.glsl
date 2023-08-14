@@ -11,12 +11,16 @@
 ================================ /// Super Duper Vanilla v1.3.4 /// ================================
 */
 
-/// Buffer features: Bloom blur 2nd pass
+/// Buffer features: Bloom blur 1st pass
 
 /// -------------------------------- /// Vertex Shader /// -------------------------------- ///
 
 #ifdef VERTEX
+    out vec2 texCoord;
+
     void main(){
+        // Get buffer texture coordinates
+        texCoord = gl_MultiTexCoord0.xy;
         gl_Position = ftransform();
     }
 #endif
@@ -24,26 +28,49 @@
 /// -------------------------------- /// Fragment Shader /// -------------------------------- ///
 
 #ifdef FRAGMENT
+    in vec2 texCoord;
+
     #ifdef BLOOM
-        // No need to use mipmapping in this 2nd bloom pass, so we'll utilize texelFetch for some sweet, sweet performance
-        uniform sampler2D colortex4;
+        // Needs to be enabled by force to be able to use LOD fully even with textureLod
+        const bool gcolorMipmapEnabled = true;
+
+        uniform float pixelWidth;
+
+        uniform sampler2D gcolor;
+
+        vec3 bloomTile(in vec3 bloomCol, in vec2 bloomPos, in int LOD){
+            float scale = exp2(LOD);
+            vec2 bloomUv = bloomPos * scale;
+
+            // Apply padding
+            if(bloomUv.x < 0 || bloomUv.x > 1 || bloomUv.y < 0 || bloomUv.y > 1) return bloomCol;
+
+            // Get pixel size based on bloom tile scale
+            float pixSize = scale * pixelWidth;
+
+            vec3 sample0 = textureLod(gcolor, vec2(bloomUv.x - pixSize * 2.0, bloomUv.y), LOD).rgb +
+                textureLod(gcolor, vec2(bloomUv.x + pixSize * 2.0, bloomUv.y), LOD).rgb;
+            vec3 sample1 = textureLod(gcolor, vec2(bloomUv.x - pixSize, bloomUv.y), LOD).rgb +
+                textureLod(gcolor, vec2(bloomUv.x + pixSize, bloomUv.y), LOD).rgb;
+            vec3 sample2 = textureLod(gcolor, bloomUv, LOD).rgb;
+
+            return sample0 * 0.0625 + sample1 * 0.25 + sample2 * 0.375;
+        }
     #endif
 
     void main(){
         #ifdef BLOOM
-            vec3 sample0 = texelFetch(colortex4, ivec2(gl_FragCoord.x, gl_FragCoord.y - 2), 0).rgb +
-                texelFetch(colortex4, ivec2(gl_FragCoord.x, gl_FragCoord.y + 2), 0).rgb;
-            vec3 sample1 = texelFetch(colortex4, ivec2(gl_FragCoord.x, gl_FragCoord.y - 1), 0).rgb +
-                texelFetch(colortex4, ivec2(gl_FragCoord.x, gl_FragCoord.y + 1), 0).rgb;
-            vec3 sample2 = texelFetch(colortex4, ivec2(gl_FragCoord.xy), 0).rgb;
-
-            vec3 finalCol = sample0 * 0.0625 + sample1 * 0.25 + sample2 * 0.375;
-            
+            vec3 finalCol = bloomTile(vec3(0), texCoord, 2);
+            finalCol = bloomTile(finalCol, vec2(texCoord.x, texCoord.y - 0.25390625), 3);
+            finalCol = bloomTile(finalCol, vec2(texCoord.x - 0.12890625, texCoord.y - 0.25390625), 4);
+            finalCol = bloomTile(finalCol, vec2(texCoord.x - 0.1953125, texCoord.y - 0.25390625), 5);
+            finalCol = bloomTile(finalCol, vec2(texCoord.x - 0.12890625, texCoord.y - 0.3203125), 6);
+        
         /* DRAWBUFFERS:4 */
-            gl_FragData[0] = vec4(finalCol, 1); // colortex4
+            gl_FragData[0] = vec4(finalCol, 1); //colortex4
         #else
         /* DRAWBUFFERS:4 */
-            gl_FragData[0] = vec4(0, 0, 0, 1); // colortex4
+            gl_FragData[0] = vec4(0, 0, 0, 1); //colortex4
         #endif
     }
 #endif
