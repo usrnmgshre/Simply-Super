@@ -32,8 +32,12 @@
 
     uniform sampler2D gcolor;
 
-    #if (defined PREVIOUS_FRAME && defined AUTO_EXPOSURE && (defined SSR || defined SSGI)) || ANTI_ALIASING >= 2
+    #if (defined PREVIOUS_FRAME && defined AUTO_EXPOSURE && defined SSR) || ANTI_ALIASING >= 2
         uniform sampler2D colortex5;
+    #endif
+
+    #if defined SSGI && ANTI_ALIASING >= 2
+        uniform sampler2D colortex6;
     #endif
 
     #if ANTI_ALIASING >= 2
@@ -55,7 +59,12 @@
 
     void main(){
         #if ANTI_ALIASING >= 2
-            vec3 sceneCol = textureTAA(ivec2(gl_FragCoord.xy));
+            #ifdef SSGI
+                vec3 SSGIcol = textureLod(colortex6, texCoord, 0).rgb;
+                vec3 sceneCol = textureTAA(ivec2(gl_FragCoord.xy));
+            #else
+                vec3 sceneCol = textureTAA(ivec2(gl_FragCoord.xy));
+            #endif
         #else
             vec3 sceneCol = texelFetch(gcolor, ivec2(gl_FragCoord.xy), 0).rgb;
         #endif

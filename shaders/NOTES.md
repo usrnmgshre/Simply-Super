@@ -11,6 +11,7 @@
 * colortex3 - Metallic, roughness, glowing entity / Final output : RGB8
 * colortex4 - Clouds / Bloom : R11F_G11F_B10F
 * colortex5 - TAA / Previous reflections, Auto exposure : RGBA16F
+* colortex6 - SSGI : R11F_G11F_B10F
 
 ## Custom Defined Macros
    This shader uses custom defined macros in every program and .glsl file for each world folders all connected to the main programs in the main folder. This is to keep the workflow minimized and understandable, and to identify what folder/program the shader is being used.
@@ -26,7 +27,7 @@
 * DEFERRED
 * DEFERRED(1-7)
 * COMPOSITE
-* COMPOSITE(1-7)
+* COMPOSITE(1-8)
 * FINAL
 
 ### Gbuffer Macros

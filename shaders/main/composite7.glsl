@@ -71,10 +71,6 @@
 
     #ifdef LENS_FLARE
     #endif
-
-    #ifdef SSGI
-        uniform sampler2D colortex6;
-    #endif
     
     #ifdef AUTO_EXPOSURE
         uniform float frameTime;
@@ -126,10 +122,8 @@
     void main(){
         // Screen texel coordinates
         ivec2 screenTexelCoord = ivec2(gl_FragCoord.xy);
-        // SSGI color
-        vec3 SSGIcol = texelFetch(colortex6, screenTexelCoord, 0).rgb;
         // Original scene color
-        vec3 color = texelFetch(gcolor, screenTexelCoord, 0).rgb + SSGIcol;
+        vec3 color = texelFetch(gcolor, screenTexelCoord, 0).rgb;
 
         #ifdef BLOOM
             // Uncompress the HDR colors and upscale
