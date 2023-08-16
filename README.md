@@ -1,5 +1,5 @@
 ## Simply Super
-   An edit of the popular __Super Duper Vanilla__ shaders developed by [@Eldeston](https://github.com/Eldeston), meant to convey the look of the Minecraft promotional art and trailers. Developed by [@usrnmgshre](https://github.com/usrnmgshre), and presented by __FlameRender Studios__.
+   An edit of the popular __Super Duper Vanilla__ shaders developed by [@Eldeston](https://github.com/Eldeston), meant to convey the look of the Minecraft promotional art and trailers. Designed to be used with the Bare Bones resource pack developed by [RobotPants](https://twitter.com/RobotPant), Simply Super is developed by [@usrnmgshre](https://github.com/usrnmgshre) and presented by __FlameRender Studios__.
 
    __Special thanks to my very good friend [@Eldeston](https://github.com/Eldeston) for letting me completely deface his incredible shader pack. 👍__
 
