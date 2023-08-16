@@ -11,7 +11,7 @@
 ## Social Links
    Join the UserNameGoesHere Discord server to discuss my personal content, or join the FlameRender Studios Discord server to talk about other developments made by our studio-community, such as Super Duper Vanilla
    * [UserNameGoesHere Discord](https://discord.gg/aFU2HZv)
-   * [Flamerender Studios Discord](https://discord.gg/UE85W5ynCg) __(This is probably the one you're looking for lol)__
+   * [FlameRender Studios Discord](https://discord.gg/UE85W5ynCg) __(This is probably the one you're looking for lol)__
    
    Subscribe to me on YouTube or follow my Twitter to view my personal content; check out my fiverr if you need a video edited
    * [UserNameGoesHere YouTube](https://www.youtube.com/c/usernamegoeshere)
