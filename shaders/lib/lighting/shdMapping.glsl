@@ -39,9 +39,5 @@ vec3 getShdCol(in vec3 shdPos){
 vec3 getShdCol(in vec3 shdPos, in float dither){
 	vec2 randVec = vec2(cos(dither), sin(dither)) / shadowMapResolution;
 
-	#if ANTI_ALIASING >= 2
-		return getShdCol(vec3(shdPos.xy + randVec, shdPos.z));
-	#else
-		return (getShdCol(vec3(shdPos.xy + randVec, shdPos.z)) + getShdCol(vec3(shdPos.xy - randVec, shdPos.z))) * 0.5;
-	#endif
+	return (getShdCol(vec3(shdPos.xy + randVec, shdPos.z)) + getShdCol(vec3(shdPos.xy - randVec, shdPos.z))) * 0.5;
 }
