@@ -42,6 +42,19 @@
 
     uniform sampler2D depthtex0;
 
+    #ifdef PREVIOUS_FRAME
+        uniform vec3 cameraPosition;
+        uniform vec3 previousCameraPosition;
+
+        uniform mat4 gbufferModelViewInverse;
+        uniform mat4 gbufferPreviousModelView;
+
+        uniform mat4 gbufferProjectionInverse;
+        uniform mat4 gbufferPreviousProjection;
+
+        #include "/lib/utility/convertPrevScreenSpace.glsl"
+    #endif
+    
     #include "/lib/utility/convertViewSpace.glsl"
     #include "/lib/utility/convertScreenSpace.glsl"
     #include "/lib/utility/noiseFunctions.glsl"
